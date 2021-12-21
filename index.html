@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>There-to-one scrollytelling data visualization demo</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main>
+        <section id="intro">
+            <h1 class="intro_hed">
+                Talking about disadvantage in public narratives
+            </h1>
+            <p class="intro_dek">
+                To examine how narratives about disadvantage are presented in the
+                Australian media, a team of Monash University researchers analysed
+                more than two hundred articles from 2020 and further explored whether
+                these narratives differ across different types of disadvantaged
+                groups, issues and publishers. The dataset was first human-coded,
+                which may help in developing machine learning models to track public
+                narratives using artificial intelligence.
+            </p>
+            Start scrolling to see how it works @ Songhai Fan.
+            <button class="btn-toggle">Toggle Dark-Mode</button>
+        </section>
+
+        <section id="scrolly">
+            <article>
+                <div class="step" id="step1">
+                    <p>
+                        step1<br />
+                        We searched Factiva using the same set of terms that were
+                        developed for the review (e.g. disadvantage* OR discrimination OR
+                        "access to resources" …) We included the most-read newspaper in
+                        every state and territory, plus The Australian (top national
+                        newspaper), Daily Telegraph (second in NSW) and Herald Sun (second
+                        in Vic) We restricted the searches to Commentaries/Opinions Or
+                        Editorials published in 2020.<br />
+                        There are total 267 articles. For this demo, we only use 50
+                        articles to demonstrate the design space.
+                    </p>
+                </div>
+                <div class="step" id="step2">
+                    <p>
+                        step2<br />
+                        Each rectangle stands for an article we collected. You can hang
+                        over the mouse to see the details for each articles.<br />
+                        The articles comes from two main publishers: 126 articles are from
+                        <span class="hover-link" data-highlight="Fairfax">"Fairfax Media Management Pty Limited"</span>
+                        and 86 articles are from
+                        <span class="hover-link" data-highlight="News">"News Ltd."</span>,
+                        the other 22 articles are from
+                        <span class="hover-link" data-highlight="Others">"Federal Capital Press of Australia Pty Ltd and
+                            West" and
+                            "Australian Newspapers Limited"</span>
+                        <br />
+                    </p>
+                </div>
+                <div class="step" id="step3">
+                    <p>
+                        step3<br />
+                        Through a qualitative thematic synthesis of all the group labels
+                        mentioned, we generated a list of 26 groups that captured all of
+                        those discussed as disadvantaged in the included articles. On the
+                        right we only only groups that were mentioned at least 25 times in
+                        the full dataset as following: 'First Nations', 'Women',
+                        'Children', 'Racial minorities', 'People with disabilities or
+                        chronic health conditions', 'Unemployed or precariously employed',
+                        'Young people'
+                    </p>
+                </div>
+                <div class="step" id="step4">
+                    <p>
+                        step4<br />
+                        Qualitative thematic analysis revealed that articles discussed
+                        both issues relating to specific forms of deprivation (e.g.
+                        violence, work, health)(Bessell, 2015), and more general issues
+                        (e.g. prejudice and discrimination, human rights). The most
+                        commonly-discussed specific issues were violence, work, crime and
+                        health. On the right we only only issues that were mentioned at
+                        least 25 times in the full dataset as following: "Violence",
+                        "Work", "Criminal justice", "Prejudice and discrimination",
+                        "Healthcare", "Familyrelations", "inequality", "Shelter"
+                    </p>
+                </div>
+                <div class="step" id="step5">
+                    <p>
+                        step5<br />
+                        Next we want to explore how the groups and issues is related. To
+                        illustrate this, we use Sankey diagram. The width of link
+                        represnts the frequency that different groups and issues were
+                        discussed in the same articles. The height of node represents the
+                        frequency of this groups or issues is co-mentioned among all the
+                        articles. Hard to understand? Let's start from one article. This
+                        article from Fairfox named "Migrant worker deserve state support"
+                        metioned Women and Racialminorities groups, while it mainly
+                        disscussed Healthcare issues. Therefore, two links from Women and
+                        Racialminorities extend to Healthcare.
+                    </p>
+                </div>
+                <div class="step" id="step6">
+                    <p>
+                        step6<br />
+                        Let's add one more article in!! This times, an article called
+                        "Celebrating the migrant mosaic" from News come in. As you may
+                        noticed, it also metioned Racialminorities, but with another three
+                        new issues: Work, Crime and Prejudice. Thus in total,
+                        Racialminorities is co-mentioned four times with other issues
+                        among these two articles, and Healthcare is discussed with other
+                        groups two times.
+                    </p>
+                </div>
+                <div class="step" id="step7">
+                    <p>
+                        step7<br />
+                        Now you know how to read Sankey diagram! Let's bring more
+                        articles!!! When it gets confusing, try hovering your mouse over
+                        the links to highlight specific paths. The Australian media seems
+                        to mention Racialminorities a lot. Wait, it's too early to draw
+                        conclusions as we're only showing 20 articles. Let's take all the
+                        articles and see if it's still the most frequently discussed
+                        group.
+                    </p>
+                </div>
+                <div class="step" id="step8">
+                    <p>
+                        step8<br />
+                        Oops, the Racialminorities bar got shorter and got squeezed into
+                        the fourth position. By the way nodes are sorted by the number of
+                        times the group represented by that node is mentioned at the same
+                        time. So you can observe the change in its ranking through
+                        animation. The most-commonly discussed disadvantaged groups were
+                        First Nations people (107 articles), women (86 articles), racial
+                        minorities (42 articles), children (37 articles), and people with
+                        disabilities or chronic health conditions (12.4%).
+                    </p>
+                </div>
+                <div class="step" id="step9">
+                    <p>
+                        step9<br />
+                        How about we focus on Firstnations, and only show the articles
+                        that metioned Firstnations to see how it co-mentioned with other
+                        groups and issues. It's great to have a look, let's do this.
+                        Scroll down the next section to see.
+                    </p>
+                </div>
+                <div class="step" id="step10">
+                    <p>
+                        step10<br />
+                        See how the Sankey varies? The rank of Work and Familyrelations
+                        slipped while Shelter moved up a little. This is such a valuable
+                        finding. It shows that Firstnations is not mentioned as often as
+                        other groups along with Work and Familyrelations. Use the
+                        following dropdown menu to select other groups or issues to
+                        filter. See what insight can you find?<br />
+                        <select id="selectContainer">
+                            <option value="all">All</option>
+                            <option value="firstnations" selected="true">
+                                Firstnations
+                            </option>
+                            <option value="women">Women</option>
+                            <option value="children">Children</option>
+                            <option value="racialminorities">Racialminorities</option>
+                            <option value="peoplewithdisabilitiesorchronichealthconditions">
+                                People with disabilities or chronic health conditions
+                            </option>
+                            <option value="unemployedorprecariouslyemployed">
+                                Unemployed or precariously employed
+                            </option>
+                            <option value="youngpeople">Young people</option>
+                            <option value="violence">Violence</option>
+                            <option value="work">Work</option>
+                            <option value="crime_criminaljustice">Criminal justice</option>
+                            <option value="prejudiceanddiscrimination_general">
+                                Prejudiceand discrimination general
+                            </option>
+                            <option value="healthcare_health">Health care</option>
+                            <option value="familyrelations">Family relations</option>
+                            <option value="inequality">Inequality</option>
+                            <option value="shelter">Shelter</option>
+                        </select>
+                    </p>
+                </div>
+                <div class="step" id="step11">
+                    <p>step11</p>
+                </div>
+                <div class="step" id="step12">
+                    <p>step12</p>
+                </div>
+            </article>
+            <figure>
+                <div id="tooltipContainer"></div>
+            </figure>
+        </section>
+
+        <section id="outro">
+            <p style="text-align: center">
+                <br /><a href="#top">Jump to top of page</a><br />
+            </p>
+        </section>
+    </main>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0"></script>
+
+    <script src="https://unpkg.com/intersection-observer"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+
+    <script src="https://unpkg.com/topojson@3"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apache-arrow@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/arquero@latest"></script>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
