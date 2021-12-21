@@ -59,7 +59,7 @@ nav {
 figure {
   position: sticky;
   margin: 0;
-  shape-rendering: optimizeSpeed;
+  /* shape-rendering: optimizeSpeed; */
   z-index: 0;
 }
 
@@ -105,4 +105,35 @@ text {
   padding: 5px;
   box-shadow: 10px 10px 10px rgba(120, 120, 120, 0.2);
   border: 2px solid white;
+}
+
+.hover-link {
+  border-bottom: 1px dotted;
+  cursor: pointer;
+  background: none;
+}
+
+.linksGroup {
+  fill: none;
+  stroke: lightgray;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+}
+
+.linksGroup:hover {
+  opacity: 1;
+  transition: ease, 0.2s;
+}
+
+.linkGroup:hover {
+  stroke: black;
+  opacity: 0.5;
+}
+
+.nodeGroup text {
+  pointer-events: none;
+}
+
+.nodeGroup rect:hover {
+  stroke: black;
 }

@@ -1,9 +1,10 @@
-import UnitchartGridLayout from "./js/UnitchartGridLayout.js";
-import UnitchartGridLayout2 from "./js/UnitchartGridLayout2.js";
-import UnitchartGridLayout3 from "./js/UnitchartGridLayout3.js";
-import HorizontalBarChart from "./js/barchart.js";
-import HorizontalBarChart2 from "./js/barchart2.js";
+import UnitchartGridLayoutId from "./js/UnitchartGridLayoutId.js";
+import UnitchartGridLayoutKey from "./js/UnitchartGridLayoutKey.js";
+import BarChartHorizontal from "./js/BarChartHorizontal.js";
+import BarChartVertical from "./js/BarChartVertical.js";
+import SankeyChart from "./js/SankeyChart.js";
 import UnitChartForceLayout from "./js/UnitChartForceLayout.js";
+
 const main = d3.select("main");
 const scrolly = main.select("#scrolly");
 const figure = scrolly.select("figure");
@@ -13,42 +14,19 @@ const step = article.selectAll(".step");
 const scroller = scrollama();
 const simulation = d3.forceSimulation();
 
-function normalize_column(name) {
-  return name
-    .toLowerCase() // map to lower case
-    .replace(/[%#$£()\'\"]/g, "") // remove unwanted characters
-    .replace(/[ /,+.*:\-\r\n@]/g, "_") // replace spacing and punctuation with an underscore
-    .replace(/_+/g, "_") // collapse repeated underscores
-    .normalize("NFD") // perform unicode normalization
-    .replace(/[\u0300-\u036f]/g, ""); // strip accents from characters
-}
-
-function normalize(table) {
-  const name = table.columnNames();
-  return aq
-    .table({ name, norm: name.map(normalize_column) }) // create table of names & normalized names
-    .groupby("norm") // group by normalized name
-    .derive({ index: aq.op.row_number(), count: aq.op.count() }) // count duplicates, generate index for each
-    .objects() // generate an array of { name, norm } objects
-    .map((o) => ({ [o.name]: o.norm + (o.count > 1 ? `_${o.index}` : "") })); // rename, adding index as needed
-}
-
-let aqTable = await aq.load("./data/Data with all codes dichotomised.csv", {
-  using: aq.fromCSV,
-});
-
-aqTable = aqTable
-  .select(normalize)
-  .derive({ id: aq.op.row_number() })
-  .relocate(aq.not("id"), { after: "id" })
-  .derive({
-    publisher: (d) =>
-      d.publisher == "Fairfax Media Management Pty Limited"
-        ? "Fairfax"
-        : d.publisher == "News Ltd."
-        ? "News"
-        : "Others",
-  });
+const data_articleIndentity = await aq.loadCSV(
+  "./data/data_articleIndentity.csv"
+);
+const data_characteristicsScore = await aq.loadCSV(
+  "./data/data_characteristicsScore.csv"
+);
+const data_groupsIssues = await aq.loadCSV("./data/data_groupsIssues.csv");
+const data_atLeast25groupsIssues = await aq.loadCSV(
+  "./data/data_atLeast25groupsIssues.csv"
+);
+const data_atLeast25articleIdentity = await aq.loadCSV(
+  "./data/data_atLeast25articleIdentity.csv"
+);
 
 const handleResize = () => {
   const stepHeight = Math.floor(window.innerHeight * 0.75);
@@ -73,49 +51,248 @@ const handleResize = () => {
 
 // scrollama event handlers
 const handleStepChange = ({ element, direction, index }) => {
-  // console.log(response);
   // response = { element, direction, index }
 
   // add color to current step only
   step.classed("is-active", (_, i) => i === index);
-  console.log(direction);
+  console.log(element, direction, index);
 
   switch (index) {
     case 0:
-      UnitchartGridLayout(aqTable.slice(0, 1), canvas, simulation);
+      UnitchartGridLayoutId(
+        data_articleIndentity.filter((d) => d.id == 1),
+        canvas,
+        simulation
+      )();
+      UnitchartGridLayoutKey(
+        data_groupsIssues.filter((d) => d.id == 1),
+        canvas,
+        simulation
+      )();
       break;
 
     case 1:
-      UnitchartGridLayout(aqTable.slice(0, 4), canvas, simulation);
+      canvas
+        .select("#figure3Group")
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+      canvas
+        .select("#xAxisGroup")
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+      canvas
+        .select("#yAxisGroup")
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+
+      UnitchartGridLayoutId(
+        data_articleIndentity.filter((d) => d.id < 5),
+        canvas,
+        simulation
+      )();
+      UnitchartGridLayoutKey(
+        data_groupsIssues.filter((d) => d.id < 5),
+        canvas,
+        simulation
+      )();
       break;
 
     case 2:
-      UnitchartGridLayout(aqTable, canvas, simulation);
+      UnitchartGridLayoutId(data_articleIndentity, canvas, simulation).margin({
+        top: 100,
+        right: 800,
+        bottom: 100,
+        left: 100,
+      })();
+      UnitchartGridLayoutKey(data_groupsIssues, canvas, simulation).margin({
+        top: 100,
+        right: 800,
+        bottom: 100,
+        left: 100,
+      })();
+
+      BarChartVertical(data_groupsIssues, canvas, simulation).margin({
+        top: 100,
+        right: 100,
+        bottom: 100,
+        left: 1250,
+      })();
       break;
 
     case 3:
-      UnitchartGridLayout2(aqTable, canvas, simulation);
+      UnitchartGridLayoutId(
+        data_atLeast25articleIdentity,
+        canvas,
+        simulation
+      ).margin({
+        top: 100,
+        right: 800,
+        bottom: 100,
+        left: 100,
+      })();
+      UnitchartGridLayoutKey(
+        data_atLeast25groupsIssues,
+        canvas,
+        simulation
+      ).margin({
+        top: 100,
+        right: 800,
+        bottom: 100,
+        left: 100,
+      })();
+
+      BarChartVertical(data_atLeast25groupsIssues, canvas, simulation).margin({
+        top: 100,
+        right: 100,
+        bottom: 100,
+        left: 1250,
+      })();
+
       break;
 
     case 4:
-      canvas.select("#figure2Group").attr("opacity", 1);
-      UnitchartGridLayout3(aqTable, canvas, simulation);
-      break;
-
-    case 5:
       canvas
         .select("#figure1Group")
         .selectAll("rect")
         .transition()
+        .ease(d3.easeExpIn)
         .duration(500)
-        .attr("opacity", 0)
-        .attr("y", (d) => -500);
-      canvas.select("#figure2Group").attr("opacity", 0);
-      HorizontalBarChart(aqTable, canvas, simulation);
+        .attr("y", -500)
+        .attr("opacity", 0);
+      canvas
+        .select("#figure2Group")
+        .transition()
+        .duration(750)
+        .style("opacity", 0)
+        .end()
+        .then(canvas.select("#figure2Group").selectAll("*").remove());
+
+      canvas
+        .select("#linksGroup")
+        .transition()
+        .duration(500)
+        .style("opacity", 0)
+        .end()
+        .then(d3.selectAll(".linkGroup").remove());
+
+      canvas
+        .select("#anotationGroup")
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+
+      BarChartHorizontal(data_atLeast25groupsIssues, canvas, simulation)();
+      break;
+
+    case 5:
+      canvas
+        .select("#xAxisGroup")
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+
+      canvas
+        .select("#yAxisGroup")
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+
+      simulation.stop();
+      SankeyChart(data_atLeast25groupsIssues, canvas, simulation)();
+
+      UnitchartGridLayoutId(
+        data_atLeast25articleIdentity,
+        canvas,
+        simulation
+      ).margin({
+        top: 100,
+        right: 1050,
+        bottom: 100,
+        left: 100,
+      })();
       break;
 
     case 6:
-      HorizontalBarChart(aqTable, canvas, simulation);
+      SankeyChart(
+        data_atLeast25groupsIssues.filter((d) => d.id == 1),
+        canvas,
+        simulation
+      )();
+
+      UnitChartForceLayout(
+        data_atLeast25articleIdentity.filter((d) => d.id == 1),
+        canvas,
+        simulation
+      ).margin({
+        top: 100,
+        right: 1050,
+        bottom: 100,
+        left: 100,
+      })();
+      break;
+
+    case 7:
+      SankeyChart(
+        data_atLeast25groupsIssues.filter((d) => d.id < 5),
+        canvas,
+        simulation
+      )();
+
+      UnitChartForceLayout(
+        data_atLeast25articleIdentity.filter((d) => d.id < 5),
+        canvas,
+        simulation
+      ).margin({
+        top: 100,
+        right: 1050,
+        bottom: 100,
+        left: 100,
+      })();
+      break;
+
+    case 8:
+      SankeyChart(data_atLeast25groupsIssues, canvas, simulation)();
+
+      UnitChartForceLayout(
+        data_atLeast25articleIdentity,
+        canvas,
+        simulation
+      ).margin({
+        top: 200,
+        right: 1050,
+        bottom: 100,
+        left: 100,
+      })();
+      break;
+
+    case 9:
+      simulation.stop();
+      SankeyChart(data_atLeast25groupsIssues, canvas, simulation)();
+
+      UnitchartGridLayoutId(
+        data_atLeast25articleIdentity,
+        canvas,
+        simulation
+      ).margin({
+        top: 100,
+        right: 1050,
+        bottom: 100,
+        left: 100,
+      })();
+      break;
+
+    case 10:
+      // SankeyChart(data_groupsIssues, canvas, simulation)();
+
+      // UnitchartGridLayoutId(data_articleIndentity, canvas, simulation).margin({
+      //   top: 100,
+      //   right: 1050,
+      //   bottom: 100,
+      //   left: 100,
+      // })();
       break;
   }
 };
